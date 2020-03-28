@@ -9,8 +9,8 @@ data class LatestCovidData(
     val data: LatestData? = null,
     val lastOriginUpdate: Date? = null
 ) {
-    inline val lastUpdate
-            get() = SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.US).format( lastOriginUpdate?: Date())
+    inline val lastUpdate: String
+        get() = SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.US).format( lastOriginUpdate?: Date())
 }
 
 data class LatestData (
