@@ -1,121 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="latestStates"
-            type="in.deepaktripathi.corona.LatestCovidData" />
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swiperefresh"
+        <fragment
+            android:id="@+id/myNavHostFragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/navigation"
+            />
+    </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/total_cases"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{`Total Corona Cases - ` + (latestStates.data != null ? latestStates.data.summary.total+`` : `Checking`)}"
-                    android:textColor="@android:color/black"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toTopOf="@+id/indian"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Total Corona Cases - 150" />
-
-                <TextView
-                    android:id="@+id/indian"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{`Indian - ` + (latestStates.data != null ? latestStates.data.summary.confirmedCasesIndian+`` : `Checking`)}"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/foreign"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/total_cases"
-                    tools:text="Indian - 150" />
-
-                <TextView
-                    android:id="@+id/foreign"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{`Foreigners - ` + (latestStates.data != null ? latestStates.data.summary.confirmedCasesForeign+`` : `Checking`)}"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/deaths"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/indian"
-                    tools:text="Foreigners - 150" />
-
-                <TextView
-                    android:id="@+id/deaths"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{`Deaths - ` + (latestStates.data != null ? latestStates.data.summary.deaths+`` : `Checking`)}"
-                    android:textColor="@android:color/holo_red_dark"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/recovered"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/foreign"
-                    tools:text="Total Deaths - 150" />
-
-                <TextView
-                    android:id="@+id/recovered"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{`Total Recoverd - ` + (latestStates.data != null ? latestStates.data.summary.discharged+`` : `Checking`)}"
-                    android:textColor="@android:color/holo_green_dark"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/last_refreshed"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/deaths"
-                    tools:text="Recovered - 150" />
-
-                <TextView
-                    android:id="@+id/last_refreshed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{`Source - The Ministry of Health and Family Welfare\nUpadated At - ` + latestStates.lastUpdate}"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/secondary_text_dark"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recovered"
-                    tools:text="Source - The Ministry of Health and Family Welfare Upadated At - " />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/floatingShareButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.95"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.95"
-                    app:srcCompat="@android:drawable/ic_menu_share" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -22,8 +22,9 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), ForceUpdateChecker.OnUpdateNeededListener {
 
-    lateinit var mFirebaseAnalytics: FirebaseAnalytics
     var data: LatestData? = null
+    lateinit var mFirebaseAnalytics: FirebaseAnalytics
+
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,63 +32,8 @@ class MainActivity : AppCompatActivity(), ForceUpdateChecker.OnUpdateNeededListe
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
-        binding.latestStates = LatestCovidData(success = true)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
-
-        swiperefresh.setOnRefreshListener {
-            mFirebaseAnalytics.logEvent("APP_REFRESH", Bundle())
-            fetchLatestCovidData(binding)
-        }
-
-        fetchLatestCovidData(binding)
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, Bundle())
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check()
-        binding.floatingShareButton.setOnClickListener {
-            val message = if(data != null) {
-                """
-                    Total Corona Cases In India -
-                    Total - ${data?.summary?.total},
-                    Indians - ${data?.summary?.confirmedCasesIndian},
-                    Foreigners - ${data?.summary?.confirmedCasesForeign},
-                    Deaths - ${data?.summary?.deaths},
-                    Recovered - ${data?.summary?.discharged}
-                    
-                    
-                """.trimIndent()
-            } else {
-                ""
-            }.plus("download Corona Counter app and get latest updates - ${ForceUpdateChecker.sharableUrl}")
-
-            ShareCompat.IntentBuilder.from(this).setType("text/plain")
-                .setChooserTitle("Chooser title")
-                .setText(message)
-                .startChooser()
-            mFirebaseAnalytics.logEvent("DATA_SHARED", Bundle())
-        }
-    }
-
-    private fun fetchLatestCovidData(
-        binding: ActivityMainBinding
-    ) {
-        val call = ApiInterface.api.getLatestDetails()
-        binding.swiperefresh.isRefreshing = true
-        call.enqueue(object : Callback<LatestCovidData> {
-            override fun onFailure(call: Call<LatestCovidData>?, t: Throwable?) {
-                toast("Sorry, Can not refresh")
-                binding.swiperefresh.isRefreshing = false
-            }
-
-            override fun onResponse(
-                call: Call<LatestCovidData>?,
-                response: Response<LatestCovidData>?
-            ) {
-                binding.latestStates = response?.body()
-                data = response?.body()?.data
-                toast("Refreshed @ ${binding.latestStates?.lastUpdate ?: ""}")
-                binding.swiperefresh.isRefreshing = false
-            }
-
-        })
     }
 
     @Override
