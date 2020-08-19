@@ -1,0 +1,2 @@
+# Corona-Counter-India
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d6016413d79b42a5b081d53156b70778)](https://app.codacy.com/manual/dpkdns/Corona-Counter-India?utm_source=github.com&utm_medium=referral&utm_content=dpkdns/Corona-Counter-India&utm_campaign=Badge_Grade_Dashboard)
